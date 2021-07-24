@@ -27,5 +27,13 @@ def article_details(request, slug):
 
 @login_required(login_url="login_view")
 def create_article(request):
+    if request.method == 'POST':
+        data = CreateArticle(request.POST, request.FILES)
+        if data.is_valid():
+            instance = data.save(commit = False)
+            instance.user = request.user
+            instance.save()
+            return redirect("article_list")
+
     form = CreateArticle()
     return render(request, 'create_articles.html', {'form': form})
