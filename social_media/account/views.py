@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 # Create your views here.
 def sigup_view(request):
@@ -19,6 +20,9 @@ def sigup_view(request):
                 email = email, 
                 password = password
             )
+            messages.success(request, f"User {username} Created")
+        else:
+            messages.error(request, "Invalid credentials")
     return render(request, 'account/signup.html')
 
 
@@ -31,10 +35,18 @@ def login_view(request):
         user = authenticate(username = username, password = password)
         if user is not None:
             login(request, user)
+            messages.success(request, "Successfully loggedIN")
             return HttpResponse("Logged IN")
         else:
+            messages.error(request,"Invalid credentials")
             return HttpResponse("Invalid credentials")
+
     return HttpResponse("GET request")
 
 
 
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "User loggedout")
+    return redirect("/")
