@@ -36,14 +36,12 @@ def login_view(request):
         if user is not None:
             login(request, user)
             messages.success(request, "Successfully loggedIN")
-            return HttpResponse("Logged IN")
+            return redirect("home_page")
         else:
             messages.error(request,"Invalid credentials")
             return HttpResponse("Invalid credentials")
 
     return HttpResponse("GET request")
-
-
 
 
 def logout_view(request):
