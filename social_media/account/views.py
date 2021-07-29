@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from user.models import Profile
 
 # Create your views here.
 def sigup_view(request):
@@ -13,6 +14,11 @@ def sigup_view(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirmpassword = request.POST.get('confirmpassword')
+        checkUser = Profile.objects.filter(user = username)
+        if checkUser:
+            messages.error(request, "User already exist")
+            return redirect("/")
+            
         if password == confirmpassword:
             user = User.objects.create_user(
                 first_name = username, 

@@ -1,6 +1,10 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render
 from .models import Post
+from django.contrib.auth.models import User
+from .models import Profile
+
+from user import models
 
 # Create your views here.
 def home(request):
@@ -24,3 +28,15 @@ def delete_view(request, pk):
     post.delete()
     messages.info(request, "Post deleted")
     return redirect("home_page")
+
+def profile_view(request, username):
+    getUser = User.objects.filter(username = username)
+    if getUser:
+        profile = Profile.objects.get(user = getUser[0])
+        data = {
+            'profile': profile,
+        }
+        return render(request, 'user/profile.html', data)
+    else:
+        messages.error(request, f"No such user named {username}")
+        return redirect("home_page")
