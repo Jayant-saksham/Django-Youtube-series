@@ -1,6 +1,6 @@
 from django.contrib import messages
-from account.models import Post
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from .models import Post
 
 # Create your views here.
 def home(request):
@@ -11,4 +11,16 @@ def home(request):
         user = Post(caption = caption, image=image, user=user)
         user.save()
         messages.success(request, "Post done successfully")
-    return render(request, 'user/feed.html')
+
+    allPost = Post.objects.all()
+    data = {
+        'posts': allPost
+    }
+    return render(request, 'user/feed.html', data)
+
+
+def delete_view(request, pk):
+    post = Post.objects.get(id = pk)
+    post.delete()
+    messages.info(request, "Post deleted")
+    return redirect("home_page")
