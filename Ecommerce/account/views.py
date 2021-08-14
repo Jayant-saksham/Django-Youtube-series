@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 def login_view(request):
 	return render(request, 'login.html')
 
+
 def signup_view(request):
 	if request.method == 'POST':
 		name = request.POST.get('name')
