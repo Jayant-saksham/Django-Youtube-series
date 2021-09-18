@@ -11,6 +11,7 @@ class Post(models.Model):
     def __str__(self):
         return f"{self.user} + {self.caption[:20]}"
 
+
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=50)

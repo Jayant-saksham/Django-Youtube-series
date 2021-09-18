@@ -1,13 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
+from django.views import View
 
-# Create your views here.
-def login_view(request):
-	return render(request, 'login.html')
+class SignupMethod(View):
 
-
-def signup_view(request):
-	if request.method == 'POST':
+	def post(self, request):
 		name = request.POST.get('name')
 		email = request.POST.get('email')
 		password = request.POST.get('password')
@@ -15,13 +13,15 @@ def signup_view(request):
 		phone = request.POST.get('phone')
 		if confirmpassword == password:
 			user = User.objects.create_user(
-				username = name,
-				email = email,
-				password = password,
+				username=name,
+				email=email,
+				password=password,
+				first_name=phone,
 			)
 		else:
 			print("No valid")
 		return render(request, "login.html")
 
-	else:
+	def get(self, request):
 		return render(request, 'signup.html')
+
