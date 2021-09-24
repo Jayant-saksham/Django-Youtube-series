@@ -12,4 +12,4 @@ def home(request):
 		'products' : allProducts,
 		'categories' : allCategories
 	}
-	return render(request, 'home.html', data)
+	return render(request, 'index.html', data)
